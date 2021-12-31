@@ -8,7 +8,7 @@ import IssueList from "../IssueList/IssueList";
 import { GET_REPO_ISSUES } from "../../queries/query";
 
 // @material-ui components/icons
-import { Typography, Chip, Button, CircularProgress } from "@material-ui/core";
+import { Typography, Chip, Button } from "@material-ui/core";
 import StarIcon from "@material-ui/icons/Star";
 import PeopleIcon from "@material-ui/icons/People";
 
@@ -27,18 +27,23 @@ const Repository = ({ repo }) => {
       stargazers: { totalCount: totalStarCount },
     },
   } = repo;
+  // defines the modal state
   const [open, setOpen] = useState(false);
 
-  const [getIssues, { loading, data }] = useLazyQuery(GET_REPO_ISSUES);
+  const [getIssues, { data }] = useLazyQuery(GET_REPO_ISSUES);
 
+  // fetch the issues list
   const fetchIssues = () => {
     getIssues({ variables: { name: name, owner: login } });
   };
+
+  // to opens the modal and fetch the issues 
   const handleClickOpen = () => {
     setOpen(true);
     fetchIssues();
   };
 
+  // to close the modal and update the state of it
   const handleClose = () => {
     setOpen(false);
   };

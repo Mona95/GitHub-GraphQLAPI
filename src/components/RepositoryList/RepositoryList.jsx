@@ -25,7 +25,7 @@ const RepositoryList = () => {
 
   useEffect(() => {
     getRepos({ variables: { username: params.username } });
-  }, []);
+  }, [getRepos, params.username]);
 
   if (loading) {
     return (

@@ -21,6 +21,7 @@ import { Typography, Button } from "@material-ui/core";
 // styles
 import { useStyles } from "./style.js";
 
+// implement the transition effect for the modal to be opened/closed
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -36,6 +37,7 @@ const IssueList = ({ open, handleClose, fetchIssues, issues, repoId }) => {
 
   const [addIssue] = useMutation(CREATE_ISSUE);
 
+  // update the create issue form values (title & body)
   const handleChange = (e) => {
     setFormValues({
       ...formValues,
@@ -43,19 +45,23 @@ const IssueList = ({ open, handleClose, fetchIssues, issues, repoId }) => {
     });
   };
 
-  const openForm = () => {
+  // in Modal, toggles between create form and issue list 
+  const displayForm = () => {
     setCreateForm(!createForm);
+    // resets the values inside form inputs
     setFormValues({
       title: "",
       body: "",
     });
   };
 
+  // after closing the modal, resets the state of form
   const handleCloseModal = () => {
     setCreateForm(false);
     handleClose();
   };
 
+  // handles adding the issue with the provided values
   const handleSubmitIssue = (e) => {
     e.preventDefault();
     addIssue({
@@ -66,6 +72,7 @@ const IssueList = ({ open, handleClose, fetchIssues, issues, repoId }) => {
       },
     });
     setCreateForm(false);
+    // fetch the issues after creating, so we can have the updated list
     fetchIssues();
   };
   return (
@@ -92,7 +99,7 @@ const IssueList = ({ open, handleClose, fetchIssues, issues, repoId }) => {
             autoFocus
             color="inherit"
             className={classes.create_issue_form_button}
-            onClick={openForm}
+            onClick={displayForm}
           >
             {!createForm ? "New issue" : "Back to issues list"}
           </Button>
